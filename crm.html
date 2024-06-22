@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importação de Arquivo XLSX</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .file-upload-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #selected-file {
+            margin-top: 10px;
+        }
+
+        #status-message {
+            margin-top: 10px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Importa XLSX</h1>
+        <form id="xlsxForm" enctype="multipart/form-data" method="post" action="conection.php">
+            <label for="xlsxFile" class="file-upload-btn">Selecionar Arquivo</label>
+            <input type="file" id="xlsxFile" accept=".xlsx" name="xlsxFile">
+            <div id="selected-file"></div>
+            <button type="submit" class="file-upload-btn">Importar</button>
+        </form>
+        <div id="status-message"></div>
+    </div>
+
+    <script>
+        document.getElementById('xlsxForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData();
+            var xlsxFileInput = document.getElementById('xlsxFile');
+            var xlsxFile = xlsxFileInput.files[0];
+            formData.append('xlsxFile', xlsxFile);
+    
+            // Aqui você pode enviar o arquivo XLSX para o servidor para processamento
+            // Usando XMLHttpRequest para enviar o arquivo para o servidor
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'conection.php', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Arquivo importado com sucesso
+                    console.log('Arquivo importado com sucesso');
+                } else {
+                    // Erro ao importar o arquivo
+                    console.error('Erro ao importar o arquivo');
+                }
+            };
+            xhr.onerror = function() {
+                console.error('Erro ao enviar arquivo para o servidor');
+            };
+            xhr.send(formData);
+        });
+    </script>    
+</body>
+</html>
